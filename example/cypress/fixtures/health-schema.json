@@ -1,0 +1,31 @@
+{
+	"type": "object",
+	"additionalProperties": false,
+	"description": "Health object",
+	"required": [
+		"result"
+	],
+	"properties": {
+		"result": {
+			"type": "object",
+			"required": [
+				"commit",
+				"healthy"
+			],
+			"additionalProperties": false,
+			"properties": {
+				"commit": {
+					"description": "Commit hash",
+					"example": "88cb49b",
+					"minLength": 7,
+					"type": "string"
+				},
+				"healthy": {
+					"description": "Healthy?",
+					"example": true,
+					"type": "boolean"
+				}
+			}
+		}
+	}
+}

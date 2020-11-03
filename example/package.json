@@ -1,0 +1,11 @@
+{
+  "name": "cypress-jsonschema-validation-example",
+  "version": "1.0.0",
+  "description": "Example use of cypress-jsonschema-validation package",
+  "main": "src/index.js",
+  "license": "MIT",
+  "dependencies": {
+    "@jc21/cypress-jsonschema-validation": "^0.0.1",
+    "cypress": "^5.5.0"
+  }
+}
