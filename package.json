@@ -1,6 +1,6 @@
 {
 	"name": "@jc21/cypress-jsonschema-validation",
-	"version": "0.0.1",
+	"version": "1.0.0",
 	"description": "Validate your data against JSON Schema",
 	"main": "./lib/index.js",
 	"types": "./lib/index.d.ts",
