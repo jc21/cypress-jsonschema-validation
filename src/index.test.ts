@@ -103,8 +103,8 @@ test('test schema file Invalid', async () => {
 		verbose: true,
 	});
 
-	expect(typeof result).toBe('string');
-	expect(result).toBe('data.result should have required property \'commit\'');
+	expect(typeof result).toBe('object');
+	expect(getValidationErrorStrings(result)).toBe('must have required property \'commit\'');
 });
 
 test('test schema object', async () => {
@@ -147,6 +147,14 @@ test('test schema object Invalid', async () => {
 		verbose: true,
 	});
 
-	expect(typeof result).toBe('string');
-	expect(result).toBe('data.result should have required property \'commit\'');
+	expect(typeof result).toBe('object');
+	expect(getValidationErrorStrings(result)).toBe('must have required property \'commit\'');
 });
+
+const getValidationErrorStrings = (errors: any): string => {
+	if (typeof errors === 'object' && errors !== null) {
+		const s = errors.map((error: any) => error.message);
+		return s.join(', ');
+	}
+	return JSON.stringify(errors);
+};

@@ -1,6 +1,7 @@
 import * as Parser from 'json-schema-ref-parser';
 import Logger from './logger';
 import * as Models from './models';
+import Ajv, {ErrorObject} from "ajv"
 
 const defaultLog = new Logger('cypress-jsonschema-validation');
 
@@ -16,7 +17,7 @@ export function JsonSchemaValidation() {
 		 * @param   {boolean}       [options.verbose]
 		 * @returns {string|null}   Errors or null if OK
 		 */
-		validateJsonSchema: async (options: Models.IOptions): Promise<Error | null> => {
+		validateJsonSchema: async (options: Models.IOptions): Promise<ErrorObject<string, Record<string, any>, unknown>[] | null | Error | undefined> => {
 			const log = new Logger('validateJsonSchema');
 
 			if (!options.schemaFile && !options.schema) {
@@ -37,11 +38,10 @@ export function JsonSchemaValidation() {
 			}
 
 			// Now validate the endpoint schema against the response
-			const Ajv = require('ajv')({
+			const ajv = new Ajv({
 				allErrors: true,
-				format: 'full',
-				nullable: true,
 				verbose: true,
+				strictSchema: false,
 			});
 
 			if (verbose) {
@@ -49,15 +49,15 @@ export function JsonSchemaValidation() {
 				log.debug('Data:', JSON.stringify(options.data, null, 2));
 			}
 
-			const valid = Ajv.validate(options.schema, options.data);
-			if (valid && !Ajv.errors) {
+			const validate = ajv.compile(options.schema as any)
+			if (validate(options.data)) {
 				if (verbose) {
 					log.success('Validation Success');
 				}
 				return null;
 			} else {
-				log.error(Ajv.errorsText());
-				return Ajv.errorsText();
+				log.error(JSON.stringify(validate.errors, null, 2));
+				return validate.errors;
 			}
 		}
 	};
